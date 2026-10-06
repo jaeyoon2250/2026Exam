@@ -5,10 +5,9 @@ import kr.ac.kopo.yoon._026exam.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/exam14_01")
@@ -32,6 +31,20 @@ public class Chap14_01Controller {
 
     @PostMapping("/insert")
     public String insertMember3(@ModelAttribute("member") Member3 member3) {
+        repository.save(member3);
+        return "redirect:/exam14_01";
+    }
+
+    // Update(update)할 내용 입력
+    @GetMapping("/edit/{id}")
+    public String updateInputMethod(@PathVariable(name = "id")int id, Model model) {
+        Optional<Member3> member3 =  repository.findById(id);
+        model.addAttribute("member", member3);
+        return "viewPage02_edit";
+    }
+
+    @PostMapping("/update")
+    public String updateMember(@ModelAttribute("member")Member3 member3) {
         repository.save(member3);
         return "redirect:/exam14_01";
     }
